@@ -1,0 +1,15 @@
+{
+  "schema_version": 2,
+  "last_export_at": "2026-05-04T05:01:20.808Z",
+  "layout": "devices/<deviceId>/<lotId>/{crops,dataset.json}",
+  "devices": {
+    "germ-obiparallels-867d81": {
+      "lots": [
+        "LOT-20260410-001"
+      ],
+      "observations_csv": "devices/germ-obiparallels-867d81/observations.csv",
+      "vertex_manifest": "devices/germ-obiparallels-867d81/vertex_manifest.jsonl",
+      "last_export_at": "2026-05-04T05:01:20.808Z"
+    }
+  }
+}
