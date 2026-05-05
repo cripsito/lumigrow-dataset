@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "last_export_at": "2026-05-04T05:01:20.808Z",
+  "last_export_at": "2026-05-05T03:55:54.398Z",
   "layout": "devices/<deviceId>/<lotId>/{crops,dataset.json}",
   "devices": {
     "germ-obiparallels-867d81": {
@@ -10,6 +10,21 @@
       "observations_csv": "devices/germ-obiparallels-867d81/observations.csv",
       "vertex_manifest": "devices/germ-obiparallels-867d81/vertex_manifest.jsonl",
       "last_export_at": "2026-05-04T05:01:20.808Z"
+    },
+    "germ-germinadorap-de5832": {
+      "lots": [
+        "LOT-20260425-651F-001",
+        "LOT-20260425-651F-002",
+        "LOT-20260425-651F-003",
+        "LOT-20260425-651F-004",
+        "LOT-20260425-651F-005",
+        "LOT-20260425-651F-006",
+        "LOT-20260425-651F-007",
+        "LOT-20260425-651F-008"
+      ],
+      "observations_csv": "devices/germ-germinadorap-de5832/observations.csv",
+      "vertex_manifest": "devices/germ-germinadorap-de5832/vertex_manifest.jsonl",
+      "last_export_at": "2026-05-05T03:55:54.398Z"
     }
   }
 }

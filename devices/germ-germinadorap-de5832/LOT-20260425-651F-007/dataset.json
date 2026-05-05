@@ -1,0 +1,23 @@
+{
+  "schema_version": 2,
+  "device_id": "germ-germinadorap-de5832",
+  "hostname": "Germinadora-PDI-IOT-IA",
+  "lot_id": "LOT-20260425-651F-007",
+  "species": "Apio",
+  "variety": null,
+  "rows": 2,
+  "cols": 3,
+  "started_at": "2026-04-25 23:49:10",
+  "closed_at": null,
+  "status": "active",
+  "crop_aspect_mode": "square",
+  "crop_dims": {
+    "w": 384,
+    "h": 384
+  },
+  "crops_total": 8058,
+  "crops_copied": 8058,
+  "crops_skipped_existing": 0,
+  "crops_missing": 0,
+  "exported_at": "2026-05-05T03:55:03.788Z"
+}
