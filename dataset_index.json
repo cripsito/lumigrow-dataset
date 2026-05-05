@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "last_export_at": "2026-05-05T03:55:54.398Z",
+  "last_export_at": "2026-05-05T19:03:50.966Z",
   "layout": "devices/<deviceId>/<lotId>/{crops,dataset.json}",
   "devices": {
     "germ-obiparallels-867d81": {
@@ -8,8 +8,9 @@
         "LOT-20260410-001"
       ],
       "observations_csv": "devices/germ-obiparallels-867d81/observations.csv",
+      "crop_observations_csv": "devices/germ-obiparallels-867d81/crop_observations.csv",
       "vertex_manifest": "devices/germ-obiparallels-867d81/vertex_manifest.jsonl",
-      "last_export_at": "2026-05-04T05:01:20.808Z"
+      "last_export_at": "2026-05-05T19:03:50.966Z"
     },
     "germ-germinadorap-de5832": {
       "lots": [
