@@ -15,9 +15,9 @@
     "w": 384,
     "h": 384
   },
-  "crops_total": 8046,
-  "crops_copied": 8046,
-  "crops_skipped_existing": 0,
+  "crops_total": 8982,
+  "crops_copied": 5028,
+  "crops_skipped_existing": 3954,
   "crops_missing": 0,
-  "exported_at": "2026-05-05T03:55:00.612Z"
+  "exported_at": "2026-05-05T21:41:11.287Z"
 }
