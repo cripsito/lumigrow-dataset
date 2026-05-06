@@ -1,10 +1,11 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "device_id": "germ-obiparallels-867d81",
   "hostname": "obi-Parallels-ARM-Virtual-Machine",
   "lot_id": "LOT-20260410-001",
   "species": "Frijol",
   "variety": "Peruano",
+  "cultivation_method": "soil",
   "rows": 5,
   "cols": 5,
   "started_at": "2026-04-10 08:25:28",
@@ -19,5 +20,5 @@
   "crops_copied": 0,
   "crops_skipped_existing": 39050,
   "crops_missing": 0,
-  "exported_at": "2026-05-05T19:03:44.634Z"
+  "exported_at": "2026-05-06T20:29:21.684Z"
 }
