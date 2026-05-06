@@ -1,10 +1,11 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "device_id": "germ-germinadorap-de5832",
   "hostname": "Germinadora-PDI-IOT-IA",
   "lot_id": "LOT-20260425-651F-005",
   "species": "Pepino",
   "variety": "Hibrido F1",
+  "cultivation_method": "hydroponic",
   "rows": 2,
   "cols": 3,
   "started_at": "2026-04-25 23:45:36",
@@ -16,8 +17,8 @@
     "h": 384
   },
   "crops_total": 8982,
-  "crops_copied": 5028,
-  "crops_skipped_existing": 3954,
+  "crops_copied": 0,
+  "crops_skipped_existing": 8982,
   "crops_missing": 0,
-  "exported_at": "2026-05-05T21:41:11.287Z"
+  "exported_at": "2026-05-06T20:36:25.352Z"
 }

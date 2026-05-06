@@ -1,10 +1,11 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "device_id": "germ-germinadorap-de5832",
   "hostname": "Germinadora-PDI-IOT-IA",
   "lot_id": "LOT-20260425-651F-003",
   "species": "Rabano",
   "variety": "Bola Chica",
+  "cultivation_method": "soil",
   "rows": 2,
   "cols": 2,
   "started_at": "2026-04-25 23:37:17",
@@ -19,5 +20,5 @@
   "crops_copied": 0,
   "crops_skipped_existing": 5016,
   "crops_missing": 0,
-  "exported_at": "2026-05-05T21:41:02.713Z"
+  "exported_at": "2026-05-06T20:36:24.144Z"
 }

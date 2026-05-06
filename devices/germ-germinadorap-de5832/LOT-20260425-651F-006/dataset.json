@@ -1,10 +1,11 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "device_id": "germ-germinadorap-de5832",
   "hostname": "Germinadora-PDI-IOT-IA",
   "lot_id": "LOT-20260425-651F-006",
   "species": "Frijol",
   "variety": "Peruano",
+  "cultivation_method": "hydroponic",
   "rows": 2,
   "cols": 3,
   "started_at": "2026-04-25 23:46:23",
@@ -19,5 +20,5 @@
   "crops_copied": 0,
   "crops_skipped_existing": 8226,
   "crops_missing": 0,
-  "exported_at": "2026-05-05T21:41:11.850Z"
+  "exported_at": "2026-05-06T20:36:26.024Z"
 }
