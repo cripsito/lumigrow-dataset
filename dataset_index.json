@@ -1,7 +1,7 @@
 {
   "schema_version": 3,
-  "previous_schema_version": 2,
-  "last_export_at": "2026-05-06T20:38:10.198Z",
+  "previous_schema_version": 3,
+  "last_export_at": "2026-05-16T20:41:31.724Z",
   "layout": "devices/<deviceId>/<lotId>/{crops,dataset.json}",
   "devices": {
     "germ-obiparallels-867d81": {
@@ -15,19 +15,23 @@
     },
     "germ-germinadorap-de5832": {
       "lots": [
-        "LOT-20260425-651F-001",
-        "LOT-20260425-651F-002",
-        "LOT-20260425-651F-003",
-        "LOT-20260425-651F-004",
-        "LOT-20260425-651F-005",
-        "LOT-20260425-651F-006",
-        "LOT-20260425-651F-007",
-        "LOT-20260425-651F-008"
+        "LOT-20260506-651F-001",
+        "LOT-20260506-651F-002",
+        "LOT-20260506-651F-003",
+        "LOT-20260506-651F-004",
+        "LOT-20260506-651F-005",
+        "LOT-20260506-651F-006",
+        "LOT-20260506-651F-007",
+        "LOT-20260506-651F-008",
+        "LOT-20260506-651F-009",
+        "LOT-20260506-651F-010",
+        "LOT-20260506-651F-011",
+        "LOT-20260506-651F-012"
       ],
       "observations_csv": "devices/germ-germinadorap-de5832/observations.csv",
       "crop_observations_csv": "devices/germ-germinadorap-de5832/crop_observations.csv",
       "vertex_manifest": "devices/germ-germinadorap-de5832/vertex_manifest.jsonl",
-      "last_export_at": "2026-05-06T20:38:10.198Z",
+      "last_export_at": "2026-05-16T20:41:31.724Z",
       "per_lot_schema_version": 3
     }
   }

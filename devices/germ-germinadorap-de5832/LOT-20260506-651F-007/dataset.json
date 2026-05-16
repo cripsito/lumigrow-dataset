@@ -1,0 +1,24 @@
+{
+  "schema_version": 3,
+  "device_id": "germ-germinadorap-de5832",
+  "hostname": "Germinadora-PDI-IOT-IA",
+  "lot_id": "LOT-20260506-651F-007",
+  "species": "Trigo",
+  "variety": "Germinados",
+  "cultivation_method": "hydroponic",
+  "rows": 4,
+  "cols": 1,
+  "started_at": "2026-05-06 21:05:23",
+  "closed_at": null,
+  "status": "active",
+  "crop_aspect_mode": "square",
+  "crop_dims": {
+    "w": 384,
+    "h": 384
+  },
+  "crops_total": 3968,
+  "crops_copied": 3968,
+  "crops_skipped_existing": 0,
+  "crops_missing": 0,
+  "exported_at": "2026-05-16T20:38:53.944Z"
+}

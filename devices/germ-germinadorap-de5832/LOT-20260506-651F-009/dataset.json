@@ -1,0 +1,24 @@
+{
+  "schema_version": 3,
+  "device_id": "germ-germinadorap-de5832",
+  "hostname": "Germinadora-PDI-IOT-IA",
+  "lot_id": "LOT-20260506-651F-009",
+  "species": "Betabel",
+  "variety": null,
+  "cultivation_method": "soil",
+  "rows": 2,
+  "cols": 2,
+  "started_at": "2026-05-06 21:07:49",
+  "closed_at": null,
+  "status": "active",
+  "crop_aspect_mode": "square",
+  "crop_dims": {
+    "w": 384,
+    "h": 384
+  },
+  "crops_total": 3928,
+  "crops_copied": 3928,
+  "crops_skipped_existing": 0,
+  "crops_missing": 0,
+  "exported_at": "2026-05-16T20:38:55.352Z"
+}
