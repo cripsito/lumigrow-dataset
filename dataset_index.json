@@ -1,7 +1,7 @@
 {
   "schema_version": 3,
   "previous_schema_version": 3,
-  "last_export_at": "2026-05-16T20:41:31.724Z",
+  "last_export_at": "2026-08-20T01:02:38.182Z",
   "layout": "devices/<deviceId>/<lotId>/{crops,dataset.json}",
   "devices": {
     "germ-obiparallels-867d81": {
@@ -31,7 +31,7 @@
       "observations_csv": "devices/germ-germinadorap-de5832/observations.csv",
       "crop_observations_csv": "devices/germ-germinadorap-de5832/crop_observations.csv",
       "vertex_manifest": "devices/germ-germinadorap-de5832/vertex_manifest.jsonl",
-      "last_export_at": "2026-05-16T20:41:31.724Z",
+      "last_export_at": "2026-08-20T01:02:38.182Z",
       "per_lot_schema_version": 3
     }
   }
