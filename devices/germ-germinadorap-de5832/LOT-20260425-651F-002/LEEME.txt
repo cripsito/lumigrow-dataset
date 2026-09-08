@@ -1,0 +1,11 @@
+DATOS DEL LOTE LOT-20260425-651F-002
+
+Esta carpeta es autocontenida y puede copiarse completa a una memoria USB.
+No se necesita Git para consultar los CSV ni las imágenes.
+
+Contenido:
+- dataset.json: identidad y configuración disponible del lote.
+- observations.csv: observaciones ambientales de este lote.
+- crop_observations.csv: registros por planta y captura.
+- crops/: recortes disponibles de las plantas.
+- vertex_manifest*.jsonl: etiquetas disponibles para entrenamiento.

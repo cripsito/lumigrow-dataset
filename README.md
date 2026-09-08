@@ -1,34 +1,59 @@
-# lumigrow-dataset
+# LumiGrow datasets
 
-Repositorio del dataset crudo de la germinadora. **Solo dataset y analisis
-exclusivo del dato.** El pipeline de modelos, planeacion y bundle de
-inferencia viven en el repo `germinadora-central-module/ai-pipeline/`.
+Biblioteca de datasets de las germinadoras LumiGrow. Cada germinadora y cada
+lote tienen una carpeta estable. Un investigador puede copiar la carpeta de su
+lote completa sin usar Git ni buscar archivos en otras ubicaciones.
 
-## Layout
+## Estructura
 
+```text
+lumigrow-dataset/
+  README.md
+  dataset_index.json
+  MIGRATION_REPORT.json
+  devices/
+    <deviceId>/
+      observations.csv
+      crop_observations.csv
+      vertex_manifest.jsonl
+      vertex_manifest.metadata.jsonl
+      <lotId>/
+        LEEME.txt
+        dataset.json
+        observations.csv
+        crop_observations.csv
+        vertex_manifest.jsonl
+        vertex_manifest.metadata.jsonl
+        crops/*.jpg
 ```
-devices/<deviceId>/
-  observations.csv               # telemetria ambiental por captura
-  crop_observations.csv          # 1 fila por (planta x captura), con etiquetas
-  vertex_manifest.jsonl          # manifest para Vertex AI
-  vertex_manifest.metadata.jsonl # idem con _meta extendido
-  <lotId>/
-    crops/*.jpg
-    dataset.json
-dataset_index.json               # indice global, fuente de verdad de devices
-```
+
+Los archivos ubicados directamente bajo `<deviceId>/` son la vista acumulada
+que consumen los notebooks actuales. Los archivos dentro de `<lotId>/` contienen
+solo ese lote y usan rutas relativas como `crops/imagen.jpg`, por lo que la
+carpeta se puede mover o copiar a una memoria USB.
 
 ## Schema v3
 
 Ver [`germinadora-central-module/ai-pipeline/docs/data-audit-and-export-spec.md`](../germinadora-central-module/ai-pipeline/docs/data-audit-and-export-spec.md)
 para el contrato de columnas y la migracion de schema.
 
-Invariante de `crop_observations.csv`: `(plant_key, capture_group)` es unico.
+Invariantes:
 
-## Flujo de actualizacion
+- en `crop_observations.csv`, `(plant_key, capture_group)` es único;
+- una reorganización nunca modifica ni elimina los JPG existentes;
+- volver a guardar un lote actualiza su carpeta sin borrar los demás lotes;
+- `dataset_index.json` enumera todos los lotes conocidos, incluso los recuperados
+  del historial del repositorio.
 
-El export de la app de la germinadora reescribe estos archivos in-place
-(idempotente). Para subir cambios:
+## Para investigadores
+
+La aplicación Germinadora Central guarda por defecto en esta biblioteca. Usa
+**Abrir biblioteca** para ver todos los lotes. Para entregar uno, copia completa
+la carpeta `devices/<germinadora>/<lote>/`.
+
+## Actualización interna del prototipo
+
+Git queda reservado para el equipo principal. Después de guardar desde la app:
 
 ```bash
 git status                # ver que cambio
@@ -38,8 +63,14 @@ git commit -m "dataset update YYYY-MM-DD"
 git push
 ```
 
-El layout `devices/<dev>/<lot>/crops/*.jpg` es **append-only**: nunca se
-reescriben crops existentes.
+La migración reproducible de carpetas portátiles se ejecuta con:
+
+```bash
+python3 scripts/migrate_portable_lots.py --apply
+```
+
+El script consulta también revisiones anteriores de Git para evitar que un
+archivo global reemplazado deje lotes históricos fuera de sus carpetas.
 
 ## Donde NO vive aqui
 

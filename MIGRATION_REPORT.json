@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-08T03:24:15.475614+00:00",
+  "mode": "apply",
+  "images_before": 138642,
+  "devices": {
+    "germ-germinadorap-de5832": {
+      "lots": {
+        "LOT-20260425-651F-001": {
+          "observations": 650,
+          "crop_observations": 372,
+          "manifest_entries": 4580,
+          "crops": 4580
+        },
+        "LOT-20260425-651F-002": {
+          "observations": 622,
+          "crop_observations": 2240,
+          "manifest_entries": 4472,
+          "crops": 4472
+        },
+        "LOT-20260425-651F-003": {
+          "observations": 710,
+          "crop_observations": 2512,
+          "manifest_entries": 5016,
+          "crops": 5016
+        },
+        "LOT-20260425-651F-004": {
+          "observations": 709,
+          "crop_observations": 2584,
+          "manifest_entries": 5160,
+          "crops": 5160
+        },
+        "LOT-20260425-651F-005": {
+          "observations": 750,
+          "crop_observations": 4500,
+          "manifest_entries": 8982,
+          "crops": 8982
+        },
+        "LOT-20260425-651F-006": {
+          "observations": 750,
+          "crop_observations": 4122,
+          "manifest_entries": 8226,
+          "crops": 8226
+        },
+        "LOT-20260425-651F-007": {
+          "observations": 750,
+          "crop_observations": 4038,
+          "manifest_entries": 8058,
+          "crops": 8058
+        },
+        "LOT-20260425-651F-008": {
+          "observations": 729,
+          "crop_observations": 3912,
+          "manifest_entries": 7818,
+          "crops": 7818
+        },
+        "LOT-20260506-651F-001": {
+          "observations": 495,
+          "crop_observations": 1980,
+          "manifest_entries": 3960,
+          "crops": 3960
+        },
+        "LOT-20260506-651F-002": {
+          "observations": 495,
+          "crop_observations": 1980,
+          "manifest_entries": 3960,
+          "crops": 3960
+        },
+        "LOT-20260506-651F-003": {
+          "observations": 496,
+          "crop_observations": 1984,
+          "manifest_entries": 3968,
+          "crops": 3968
+        },
+        "LOT-20260506-651F-004": {
+          "observations": 495,
+          "crop_observations": 1980,
+          "manifest_entries": 3960,
+          "crops": 3960
+        },
+        "LOT-20260506-651F-005": {
+          "observations": 496,
+          "crop_observations": 1984,
+          "manifest_entries": 0,
+          "crops": 3968
+        },
+        "LOT-20260506-651F-006": {
+          "observations": 495,
+          "crop_observations": 1980,
+          "manifest_entries": 3960,
+          "crops": 3960
+        },
+        "LOT-20260506-651F-007": {
+          "observations": 495,
+          "crop_observations": 1984,
+          "manifest_entries": 3968,
+          "crops": 3968
+        },
+        "LOT-20260506-651F-008": {
+          "observations": 487,
+          "crop_observations": 1948,
+          "manifest_entries": 3896,
+          "crops": 3896
+        },
+        "LOT-20260506-651F-009": {
+          "observations": 491,
+          "crop_observations": 1964,
+          "manifest_entries": 3928,
+          "crops": 3928
+        },
+        "LOT-20260506-651F-010": {
+          "observations": 491,
+          "crop_observations": 1964,
+          "manifest_entries": 3928,
+          "crops": 3928
+        },
+        "LOT-20260506-651F-011": {
+          "observations": 487,
+          "crop_observations": 1948,
+          "manifest_entries": 3896,
+          "crops": 3896
+        },
+        "LOT-20260506-651F-012": {
+          "observations": 486,
+          "crop_observations": 1944,
+          "manifest_entries": 3888,
+          "crops": 3888
+        }
+      },
+      "history_revisions": {
+        "observations_csv": 3,
+        "crop_observations_csv": 3,
+        "vertex_manifest": 4,
+        "vertex_manifest_metadata": 4
+      }
+    },
+    "germ-obiparallels-867d81": {
+      "lots": {
+        "LOT-20260410-001": {
+          "observations": 781,
+          "crop_observations": 19525,
+          "manifest_entries": 39050,
+          "crops": 39050
+        },
+        "LOT-20260410-002": {
+          "observations": 676,
+          "crop_observations": 0,
+          "manifest_entries": 0,
+          "crops": 0
+        }
+      },
+      "history_revisions": {
+        "observations_csv": 1,
+        "crop_observations_csv": 1,
+        "vertex_manifest": 1,
+        "vertex_manifest_metadata": 1
+      }
+    }
+  },
+  "totals": {
+    "lots": 22,
+    "observations": 13036,
+    "crop_observations": 67445,
+    "manifest_entries": 134674
+  },
+  "missing_crop_references": [],
+  "images_after": 138642,
+  "images_unchanged": true,
+  "validation": {
+    "passed": true,
+    "errors": [],
+    "totals": {
+      "lots": 22,
+      "observations": 13036,
+      "crop_observations": 67445,
+      "manifest_entries": 134674
+    }
+  }
+}

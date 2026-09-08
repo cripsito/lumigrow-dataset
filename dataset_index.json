@@ -2,19 +2,18 @@
   "schema_version": 3,
   "previous_schema_version": 3,
   "last_export_at": "2026-08-20T01:02:38.182Z",
-  "layout": "devices/<deviceId>/<lotId>/{crops,dataset.json}",
+  "layout": "devices/<deviceId>/<lotId>/{dataset.json,observations.csv,crop_observations.csv,vertex_manifest*.jsonl,crops}",
   "devices": {
-    "germ-obiparallels-867d81": {
-      "lots": [
-        "LOT-20260410-001"
-      ],
-      "observations_csv": "devices/germ-obiparallels-867d81/observations.csv",
-      "crop_observations_csv": "devices/germ-obiparallels-867d81/crop_observations.csv",
-      "vertex_manifest": "devices/germ-obiparallels-867d81/vertex_manifest.jsonl",
-      "last_export_at": "2026-05-06T20:29:27.837Z"
-    },
     "germ-germinadorap-de5832": {
       "lots": [
+        "LOT-20260425-651F-001",
+        "LOT-20260425-651F-002",
+        "LOT-20260425-651F-003",
+        "LOT-20260425-651F-004",
+        "LOT-20260425-651F-005",
+        "LOT-20260425-651F-006",
+        "LOT-20260425-651F-007",
+        "LOT-20260425-651F-008",
         "LOT-20260506-651F-001",
         "LOT-20260506-651F-002",
         "LOT-20260506-651F-003",
@@ -33,6 +32,18 @@
       "vertex_manifest": "devices/germ-germinadorap-de5832/vertex_manifest.jsonl",
       "last_export_at": "2026-08-20T01:02:38.182Z",
       "per_lot_schema_version": 3
+    },
+    "germ-obiparallels-867d81": {
+      "lots": [
+        "LOT-20260410-001",
+        "LOT-20260410-002"
+      ],
+      "observations_csv": "devices/germ-obiparallels-867d81/observations.csv",
+      "crop_observations_csv": "devices/germ-obiparallels-867d81/crop_observations.csv",
+      "vertex_manifest": "devices/germ-obiparallels-867d81/vertex_manifest.jsonl",
+      "last_export_at": "2026-05-06T20:29:27.837Z",
+      "per_lot_schema_version": 3
     }
-  }
+  },
+  "last_migration_at": "2026-09-08T03:24:15.475614+00:00"
 }

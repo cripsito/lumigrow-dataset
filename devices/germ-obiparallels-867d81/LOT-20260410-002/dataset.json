@@ -1,0 +1,13 @@
+{
+  "schema_version": 3,
+  "device_id": "germ-obiparallels-867d81",
+  "lot_id": "LOT-20260410-002",
+  "species": "Frijol",
+  "variety": "Peruano",
+  "rows": null,
+  "cols": null,
+  "started_at": null,
+  "status": "unknown",
+  "crops_total": 0,
+  "reconstructed_from_repository_history": true
+}
