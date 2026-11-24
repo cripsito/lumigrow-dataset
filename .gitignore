@@ -2,3 +2,5 @@
 .ipynb_checkpoints/
 .claude/
 .DS_Store
+# Fotos originales: se copian por USB o rsync, no por Git (LumiGrow).
+devices/**/capturas/

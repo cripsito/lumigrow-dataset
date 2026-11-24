@@ -1,0 +1,29 @@
+DATOS DEL LOTE LOT-20261028-651F-003
+
+Esta carpeta es una copia independiente y se puede llevar completa en una memoria USB.
+No necesitas Git ni conexión a Internet para abrirla.
+
+Contenido:
+- dataset.json: identidad y configuración del lote, conteos y verificación de archivos.
+- plants.csv: una fila por planta (también las reemplazadas), con etiqueta, germinación y última altura.
+- crop_observations.csv: una fila por planta y captura, con la altura medida hasta ese momento.
+- plant_journal.csv: bitácora por tiempos (alturas medidas, estado, riego y otras intervenciones).
+- plant_events.csv: historial de clasificaciones, marcas de germinación y reemplazos.
+- captures.csv: una fila por fotografía, con su archivo en capturas/.
+- meshes.json: todas las versiones de la maya (esquinas, rejilla y vigencia) para volver a recortar.
+- observations.csv: condiciones del lote en cada captura.
+- environment/: sensores cada 5 minutos y registros de encendido de luz y ventilación.
+- twin_calibration.json: calibración del gemelo digital con la que se analizó el lote.
+- crops/: recortes de plantas listos para análisis.
+- capturas/: fotografías originales, separadas en ambiente y flash.
+- vertex_manifest*.jsonl: archivos técnicos para entrenamiento.
+- lote.db: las mismas filas en SQLite, como están en la germinadora.
+- checksums.sha256: huella de cada archivo, para saber si llegó completo.
+
+Para comprobar una copia (Mac o Linux), en esta carpeta:
+  shasum -a 256 -c checksums.sha256 | grep -v ": OK"
+  cd capturas && shasum -a 256 -c checksums.sha256 | grep -v ": OK"
+Si no muestra ningún archivo, está completa.
+
+Las fechas están en UTC; los nombres de archivo de las fotos, en hora local.
+Para entregar el lote, copia esta carpeta completa.

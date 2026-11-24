@@ -1,0 +1,24 @@
+{
+  "schema_version": 3,
+  "device_id": "germ-germinadorap-de5832",
+  "hostname": "Germinadora-PDI-IOT-IA",
+  "lot_id": "LOT-20260923-651F-001",
+  "species": "Pepino",
+  "variety": "Hibrido Karolina 2",
+  "cultivation_method": "soil",
+  "rows": 3,
+  "cols": 4,
+  "started_at": "2026-09-24 00:13:00",
+  "closed_at": null,
+  "status": "active",
+  "crop_aspect_mode": "square",
+  "crop_dims": {
+    "w": 384,
+    "h": 384
+  },
+  "crops_total": 0,
+  "crops_copied": 0,
+  "crops_skipped_existing": 0,
+  "crops_missing": 0,
+  "exported_at": "2026-09-24T21:15:34.720Z"
+}

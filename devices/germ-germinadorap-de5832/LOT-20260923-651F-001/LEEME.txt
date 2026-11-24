@@ -1,0 +1,14 @@
+DATOS DEL LOTE LOT-20260923-651F-001
+
+Esta carpeta es una copia independiente y se puede llevar completa en una memoria USB.
+No necesitas Git ni conexión a Internet para abrirla.
+
+Contenido:
+- dataset.json: identidad y configuración del lote.
+- observations.csv: condiciones y observaciones del lote.
+- crop_observations.csv: una fila por planta y captura.
+- crops/: recortes de plantas listos para análisis.
+- capturas/: fotografías originales, separadas en ambiente y flash.
+- vertex_manifest*.jsonl: archivos técnicos para entrenamiento.
+
+Para entregar el lote, copia esta carpeta completa.
