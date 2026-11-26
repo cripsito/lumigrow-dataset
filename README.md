@@ -53,15 +53,17 @@ la carpeta `devices/<germinadora>/<lote>/`.
 
 ## Actualización interna del prototipo
 
-Git queda reservado para el equipo principal. Después de guardar desde la app:
+Git queda reservado para el equipo principal. Después de guardar desde la app,
+sube **por partes** siguiendo [`MANIFIESTO-SUBIDA.md`](MANIFIESTO-SUBIDA.md):
 
 ```bash
-git status                # ver que cambio
-git diff dataset_index.json
-git add devices dataset_index.json
-git commit -m "dataset update YYYY-MM-DD"
-git push
+python3 scripts/subir_por_partes.py --auditar   # estado de cada lote
+python3 scripts/subir_por_partes.py             # plan, sin cambiar nada
+python3 scripts/subir_por_partes.py --subir     # commit y push parte por parte
 ```
+
+No uses `git add devices` de una sola vez: con lotes grandes el push se corta
+(así quedó a medias la subida del 24 de noviembre de 2026).
 
 La migración reproducible de carpetas portátiles se ejecuta con:
 
