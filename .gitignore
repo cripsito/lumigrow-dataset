@@ -2,5 +2,7 @@
 .ipynb_checkpoints/
 .claude/
 .DS_Store
-# Fotos originales: se copian por USB o rsync, no por Git (LumiGrow).
-devices/**/capturas/
+__pycache__/
+# Copias de fotos dentro de cada lote (antes de 3.1.82): se quedan en el disco, no van por Git (LumiGrow).
+# Las fotos completas van una sola vez por germinadora en devices/<id>/capturas/<día>/ (D-83).
+devices/*/LOT-*/capturas/

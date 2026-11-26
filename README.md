@@ -17,20 +17,50 @@ lumigrow-dataset/
       crop_observations.csv
       vertex_manifest.jsonl
       vertex_manifest.metadata.jsonl
+      capturas/                      # desde 3.1.82: fotos completas, una sola vez
+        <AAAA-MM-DD>/
+          checksums.sha256
+          ambiente/*.jpg
+          flash/*.jpg
       <lotId>/
         LEEME.txt
         dataset.json
+        captures.csv                 # ruta de cada foto: ../capturas/<día>/<luz>/<archivo>
+        meshes.json                  # coordenadas de las mayas: de aquí salen los recortes
+        lote.db
         observations.csv
         crop_observations.csv
         vertex_manifest.jsonl
         vertex_manifest.metadata.jsonl
-        crops/*.jpg
+        crops/*.jpg                  # solo en lotes de antes de 3.1.82
 ```
 
 Los archivos ubicados directamente bajo `<deviceId>/` son la vista acumulada
 que consumen los notebooks actuales. Los archivos dentro de `<lotId>/` contienen
 solo ese lote y usan rutas relativas como `crops/imagen.jpg`, por lo que la
 carpeta se puede mover o copiar a una memoria USB.
+
+### Lotes guardados como fotos (app 3.1.82 en adelante)
+
+Los lotes nuevos no guardan recortes: guardan las **fotos completas**, una sola
+vez por germinadora aunque varias charolas o lotes salgan en la misma foto, y
+las coordenadas de sus mayas. Así se conserva todo lo que vio la cámara, también
+lo que queda fuera de las celdas, y se sube menos. En `dataset.json`,
+`crops_in_folder` vale `false`.
+
+Para tener los recortes de uno de esos lotes:
+
+```bash
+pip install opencv-python-headless numpy
+python3 scripts/recortar_desde_fotos.py --lote devices/<germinadora>/<lote>
+```
+
+Los recortes salen en `<lote>/crops/`, idénticos byte a byte a los que hace la
+germinadora, y a **tamaño real** (cada celda con los píxeles que tiene en la
+foto). Otras opciones: `--tamano 384` para el formato de antes, `--todos` para
+todos los lotes con fotos, `--salida <carpeta>` y `--verificar` para comparar con
+recortes existentes. El entrenamiento (`train_m1.py`) lo corre solo cuando le
+faltan recortes. `subir_por_partes.py` no sube esos recortes rehechos.
 
 ## Schema v3
 
@@ -49,7 +79,9 @@ Invariantes:
 
 La aplicación Germinadora Central guarda por defecto en esta biblioteca. Usa
 **Abrir biblioteca** para ver todos los lotes. Para entregar uno, copia completa
-la carpeta `devices/<germinadora>/<lote>/`.
+la carpeta `devices/<germinadora>/<lote>/`. Si el lote se guardó como fotos,
+copia también `devices/<germinadora>/capturas/` (o solo los días del lote), que
+es donde están sus fotos.
 
 ## Actualización interna del prototipo
 

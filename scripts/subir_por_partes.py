@@ -9,15 +9,22 @@ en una Mac.
   python3 scripts/subir_por_partes.py             plan de partes (no cambia nada)
   python3 scripts/subir_por_partes.py --subir     commit y push, parte por parte
 
-Orden de cada lote: primero los recortes (crops/), después los datos del lote
-(CSV, JSON, lote.db) y al final el índice general. Así el índice nunca apunta a
-un lote que no llegó completo.
+Orden: primero las fotos de cada germinadora (devices/<id>/capturas/<día>/),
+después cada lote, con sus recortes (crops/) si los tiene y luego sus datos (CSV,
+JSON, lote.db), y al final el índice general. Así ni un lote nombra una foto que
+no llegó ni el índice nombra un lote que no llegó completo.
+
+Desde la app 3.1.82 (D-83), los lotes nuevos se guardan como fotos completas, una
+sola vez por germinadora, más las coordenadas de sus mayas; los recortes se
+rehacen con scripts/recortar_desde_fotos.py. Las copias de fotos dentro de cada
+lote (devices/<id>/LOT-*/capturas/, de antes) siguen fuera de Git.
 
 Nunca borra archivos, nunca reescribe la historia y nunca usa --force. Si una
 subida falla, los commits quedan locales; al volver a correrlo, primero sube
 esos y luego sigue con lo pendiente.
 """
 import argparse
+import csv
 import hashlib
 import json
 import os
@@ -31,7 +38,8 @@ LIMITE_GITHUB = 100 * MB      # GitHub rechaza archivos de 100 MiB o más
 BLOQUEO = 95 * MB             # margen para no rozar el límite
 AVISO = 50 * MB               # GitHub avisa desde 50 MiB
 PROHIBIDO = [
-    (re.compile(r'(^|/)capturas/'), 'foto original (capturas/): va por USB o rsync, no por Git'),
+    (re.compile(r'^devices/[^/]+/LOT-[^/]+/capturas/'),
+     'copia de foto dentro de un lote (antes de 3.1.82): las fotos van una sola vez en devices/<id>/capturas/'),
     (re.compile(r'(^|/)\.env($|\.)'), 'archivo de entorno'),
     (re.compile(r'(^|/)(credentials|secrets?)(/|\.|$)', re.I), 'credenciales'),
     (re.compile(r'(^|/)rsa\.json$|\.(pem|key|p12)$', re.I), 'llave privada'),
@@ -91,6 +99,14 @@ def lote_de(ruta):
     return None
 
 
+def foto_de(ruta):
+    """(germinadora, día) de una foto o huella en devices/<id>/capturas/<día>/…"""
+    p = ruta.split('/')
+    if len(p) >= 5 and p[0] == 'devices' and p[2] == 'capturas':
+        return p[1], p[3]
+    return None
+
+
 def leer_checksums(carpeta):
     f = os.path.join(carpeta, 'checksums.sha256')
     if not os.path.exists(f):
@@ -117,7 +133,11 @@ def sha256(path):
 
 def revisar_lote(lote, rutas_pendientes, verificar_hash):
     """Compara la carpeta del lote con su checksums.sha256."""
-    carpeta = os.path.join('devices', lote)
+    return revisar_carpeta(os.path.join('devices', lote), rutas_pendientes, verificar_hash)
+
+
+def revisar_carpeta(carpeta, rutas_pendientes, verificar_hash):
+    """Compara una carpeta (lote o día de fotos) con su checksums.sha256."""
     sums = leer_checksums(carpeta)
     if sums is None:
         return {'checksums': False, 'faltan': [], 'distintos': []}
@@ -131,14 +151,29 @@ def revisar_lote(lote, rutas_pendientes, verificar_hash):
     return {'checksums': True, 'faltan': faltan, 'distintos': distintos}
 
 
+def es_lote_de_fotos(lote, _cache={}):
+    """True si el lote se guardó como fotos (3.1.82+): sus recortes se rehacen, no se suben."""
+    if lote not in _cache:
+        try:
+            with open(os.path.join('devices', lote, 'dataset.json'), encoding='utf-8') as fh:
+                _cache[lote] = json.load(fh).get('crops_in_folder') is False
+        except (OSError, ValueError):
+            _cache[lote] = False
+    return _cache[lote]
+
+
 def planear(items, max_mb, max_archivos, permitir_borrados):
-    problemas, avisos = [], []
-    por_lote, general, borrados = {}, [], []
+    problemas, avisos, omitidos = [], [], []
+    por_lote, fotos, general, borrados = {}, {}, [], []
     for estado, ruta in items:
         if 'D' in estado:
             borrados.append(ruta)
             if not permitir_borrados:
                 continue
+        lote = lote_de(ruta)
+        if lote and ruta.split('/')[3] == 'crops' and es_lote_de_fotos(lote):
+            omitidos.append(ruta)   # rehechos con recortar_desde_fotos.py
+            continue
         for patron, motivo in PROHIBIDO:
             if patron.search(ruta):
                 problemas.append(f'{ruta}: {motivo}')
@@ -154,8 +189,12 @@ def planear(items, max_mb, max_archivos, permitir_borrados):
             problemas.append(f'{ruta}: {fmt_mb(size)}; GitHub rechaza archivos de 100 MB o más')
         elif size >= AVISO:
             avisos.append(f'{ruta}: {fmt_mb(size)}; GitHub avisa desde 50 MB')
-        lote = lote_de(ruta)
-        if lote:
+        dia = foto_de(ruta)
+        if dia:
+            fotos.setdefault(dia[0], {'fotos': [], 'huellas': []})
+            clave = 'huellas' if ruta.endswith('/checksums.sha256') else 'fotos'
+            fotos[dia[0]][clave].append((ruta, size))
+        elif lote:
             por_lote.setdefault(lote, {'pesados': [], 'datos': []})
             clave = 'pesados' if ruta.split('/')[3] == 'crops' else 'datos'
             por_lote[lote][clave].append((ruta, size))
@@ -164,7 +203,11 @@ def planear(items, max_mb, max_archivos, permitir_borrados):
 
     partes = []
 
-    def trocear(lista, titulo):
+    def dias(rutas):
+        d = sorted({foto_de(r)[1] for r in rutas})
+        return d[0] if len(d) == 1 else f'{d[0]} a {d[-1]}'
+
+    def trocear(lista, titulo, con_dias=False):
         lista = sorted(lista)
         bloques, actual, peso = [], [], 0
         for ruta, size in lista:
@@ -177,14 +220,25 @@ def planear(items, max_mb, max_archivos, permitir_borrados):
             bloques.append((actual, peso))
         for i, (rutas, peso) in enumerate(bloques, 1):
             sufijo = f' {i}/{len(bloques)}' if len(bloques) > 1 else ''
+            if con_dias:
+                sufijo += f' ({dias(rutas)})'
             partes.append({'titulo': f'{titulo}{sufijo}', 'rutas': rutas, 'peso': peso})
 
+    # Las fotos van antes que los lotes: captures.csv de un lote las nombra.
+    # Las huellas de cada día, después de sus fotos.
+    for dev in sorted(fotos):
+        trocear(fotos[dev]['fotos'], f'Fotos {dev}', con_dias=True)
+        trocear(fotos[dev]['huellas'], f'Fotos {dev}: huellas por día', con_dias=True)
     for lote in sorted(por_lote):
         nombre = lote.split('/')[1]
         trocear(por_lote[lote]['pesados'], f'Datos {nombre}: recortes')
         trocear(por_lote[lote]['datos'], f'Datos {nombre}: tablas del lote')
     trocear(general, 'Índice y vistas generales del dataset')
-    return partes, problemas, avisos, borrados, sorted(por_lote)
+    dias_tocados = sorted({foto_de(r) for d in fotos.values() for r, _ in d['fotos'] + d['huellas']})
+    if omitidos:
+        avisos.append(f'{len(omitidos)} recortes de lotes guardados como fotos no se suben: se rehacen con '
+                      f'scripts/recortar_desde_fotos.py. Ejemplo: {omitidos[0]}')
+    return partes, problemas, avisos, borrados, sorted(por_lote), dias_tocados
 
 
 def estado_rama(remoto, rama):
@@ -214,6 +268,27 @@ def push(remoto, rama, intentos=4):
             time.sleep(espera)
             espera *= 2
     return False
+
+
+def fotos_del_lote(carpeta):
+    """Fotos que nombra un lote guardado como fotos (3.1.82+), o None si guarda recortes."""
+    try:
+        with open(os.path.join(carpeta, 'dataset.json'), encoding='utf-8') as fh:
+            meta = json.load(fh)
+    except (OSError, ValueError):
+        return None
+    if meta.get('crops_in_folder') is not False:
+        return None
+    rutas = []
+    try:
+        with open(os.path.join(carpeta, 'captures.csv'), encoding='utf-8-sig', newline='') as fh:
+            for fila in csv.DictReader(fh):
+                rel = fila.get('original_path') or ''
+                if rel.startswith('../capturas/'):
+                    rutas.append(os.path.normpath(os.path.join(carpeta, rel)).replace(os.sep, '/'))
+    except OSError:
+        return []
+    return sorted(set(rutas))
 
 
 def auditar(verificar_hash):
@@ -260,12 +335,51 @@ def auditar(verificar_hash):
                 print(f'  SIN SUBIR   {lote}: {len(sin_subir)} archivos en disco aún no están en Git')
             else:
                 print(f'  COMPLETO    {lote}: {len(sums)} archivos')
+            fotos = fotos_del_lote(carpeta)
+            if fotos is not None:
+                sin_disco = [f for f in fotos if not os.path.exists(f)]
+                sin_git = [f for f in fotos if f not in en_git_set and os.path.exists(f)]
+                if sin_disco:
+                    malos += 1
+                    print(f'              FOTOS: faltan {len(sin_disco)} de {len(fotos)} en devices/{dev}/capturas/, '
+                          f'p. ej. {sin_disco[0]}')
+                elif sin_git:
+                    print(f'              FOTOS: {len(sin_git)} de {len(fotos)} aún no están en Git')
+                else:
+                    print(f'              FOTOS: {len(fotos)} en devices/{dev}/capturas/')
             if verificar_hash:
                 mal = [n for n in sums if os.path.exists(os.path.join(carpeta, n))
                        and sha256(os.path.join(carpeta, n)) != sums[n]]
                 if mal:
                     malos += 1
                     print(f'              {len(mal)} archivos no coinciden con su huella, p. ej. {mal[0]}')
+    # Fotos completas por germinadora (3.1.82+), un checksums.sha256 por día.
+    for dev in sorted(os.listdir('devices')) if os.path.isdir('devices') else []:
+        raiz_fotos = os.path.join('devices', dev, 'capturas')
+        if not os.path.isdir(raiz_fotos):
+            continue
+        n_dias = n_fotos = n_git = 0
+        for dia in sorted(os.listdir(raiz_fotos)):
+            carpeta = f'devices/{dev}/capturas/{dia}'
+            sums = leer_checksums(carpeta)
+            if sums is None:
+                continue
+            n_dias += 1
+            n_fotos += len(sums)
+            n_git += sum(1 for n in sums if f'{carpeta}/{n}' in en_git_set)
+            r = revisar_carpeta(carpeta, [], False)
+            if r['faltan']:
+                malos += 1
+                print(f'  INCOMPLETO  {carpeta}: faltan {len(r["faltan"])} de {len(sums)} fotos')
+            if verificar_hash:
+                mal = [n for n in sums if os.path.exists(os.path.join(carpeta, n))
+                       and sha256(os.path.join(carpeta, n)) != sums[n]]
+                if mal:
+                    malos += 1
+                    print(f'  DAÑADO      {carpeta}: {len(mal)} fotos no coinciden con su huella, p. ej. {mal[0]}')
+        if n_dias:
+            print(f'\nFotos de {dev}: {n_fotos} en {n_dias} días, {n_git} ya en Git')
+
     tam = 0
     for base, _, files in os.walk('.git'):
         for f in files:
@@ -301,7 +415,7 @@ def main():
                          '`git restore --staged .` antes de usar este script.')
 
     items = pendientes()
-    partes, problemas, avisos, borrados, lotes = planear(items, a.max_mb, a.max_archivos, a.permitir_borrados)
+    partes, problemas, avisos, borrados, lotes, dias = planear(items, a.max_mb, a.max_archivos, a.permitir_borrados)
 
     incompletos = {}
     for lote in lotes:
@@ -312,6 +426,15 @@ def main():
                              f'p. ej. {r["distintos"][0]}. Vuelve a guardar el lote desde la app.')
         if r['faltan']:
             incompletos[lote] = r['faltan']
+    for dev, dia in dias:
+        carpeta = f'devices/{dev}/capturas/{dia}'
+        rutas = [x for p in partes for x in p['rutas'] if x.startswith(carpeta + '/')]
+        r = revisar_carpeta(carpeta, rutas, a.verificar_hash or a.subir)
+        if r['distintos']:
+            problemas.append(f'{carpeta}: {len(r["distintos"])} fotos no coinciden con checksums.sha256, '
+                             f'p. ej. {r["distintos"][0]}. Vuelve a guardar los lotes de ese día desde la app.')
+        if r['faltan']:
+            incompletos[carpeta] = r['faltan']
 
     total = sum(p['peso'] for p in partes)
     print(f'Pendiente: {sum(len(p["rutas"]) for p in partes)} archivos, {fmt_mb(total)}, en {len(partes)} partes\n')
@@ -319,7 +442,7 @@ def main():
         print(f'  {i:>3}. {p["titulo"]}: {len(p["rutas"])} archivos, {fmt_mb(p["peso"])}')
     for lote, faltan in incompletos.items():
         print(f'\nINCOMPLETO {lote}: faltan {len(faltan)} archivos de su checksums.sha256, p. ej. {faltan[0]}')
-        print('  Vuelve a guardar el lote desde la app en esta germinadora antes de subirlo.')
+        print('  Vuelve a guardar el lote (o los lotes de ese día) desde la app en esta germinadora antes de subirlo.')
     if borrados:
         accion = 'se incluyen' if a.permitir_borrados else 'NO se incluyen (usa --permitir-borrados tras revisarlos)'
         print(f'\nBorrados: {len(borrados)}, {accion}. Ejemplo: {borrados[0]}')
